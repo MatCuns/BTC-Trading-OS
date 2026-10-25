@@ -82,3 +82,25 @@ def test_resumable_bootstrap_and_minimum_runtime_privileges(tmp_path):
             conn.execute("DELETE FROM paper.fills")
         with pytest.raises(psycopg.errors.InsufficientPrivilege):
             conn.execute("CREATE TABLE paper.forbidden (id int)")
+
+    # The generated runtime credentials must also support the real backup path.
+    import json
+    from io import StringIO
+
+    from btc_os.cli import backup, restore_drill
+
+    with patch.dict(
+        os.environ, {"BTC_DATABASE_URL": app_url, "BTC_BACKUP_ROOT": str(tmp_path / "backup")}
+    ):
+        app_store = PostgresStore(app_url)
+        runtime = TradingEngine(Settings(database_url=app_url, _env_file=None), app_store)
+        runtime.start()
+        assert runtime.reconciled
+        backup("pg_dump")
+        backup("pg_restore", restore=True)
+        with patch(
+            "sys.stdin",
+            StringIO(json.dumps({"admin": url.username, "password": url.password or ""}) + "\n"),
+        ):
+            restore_drill("pg_restore")
+        app_store.close()

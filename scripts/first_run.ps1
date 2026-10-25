@@ -1,3 +1,4 @@
+param([switch]$NoBrowser)
 # Process-only execution policy is set by the launcher, never changed globally.
 . "$PSScriptRoot\common.ps1"
 Write-Host 'BTC QUANT OS | PAPER SETUP | No API keys or real orders' -ForegroundColor Cyan
@@ -81,7 +82,7 @@ try {
     & "$PSScriptRoot\start.ps1"
     if (-not $?) { throw 'Application startup failed.' }
     & "$PSScriptRoot\verify_release.ps1"
-    Start-Process 'http://127.0.0.1:8765'
+    if (-not $NoBrowser) { Start-Process 'http://127.0.0.1:8765' }
     Save-Stage 'complete'
     Write-Host 'PAPER ready. Kill switch ON; strategy OFF. Read the feed label before unlocking PAPER.' -ForegroundColor Green
 } catch {

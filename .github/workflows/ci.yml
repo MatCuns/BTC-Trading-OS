@@ -47,17 +47,22 @@ jobs:
           python -m venv .venv
           "${{ github.workspace }}\.venv\Scripts" | Out-File $env:GITHUB_PATH -Encoding utf8 -Append
       - run: python -m pip install -r requirements/dev.txt -e .
-      - run: ./scripts/test_scripts.ps1
+      - run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/test_scripts.ps1
       - run: ./scripts/ci_postgres.ps1
       - run: python -m alembic upgrade head
       - run: pytest -q --junitxml=reports/pytest-windows.xml
       - run: python scripts/ci_backup_check.py
-      - name: Native Windows process boot, health and stop
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Native Windows resumable setup, process boot, health and stop
         run: |
           'BTC_FEED_MODE=fixture' | Set-Content .env -Encoding ascii
-          ./scripts/start.ps1
-          ./scripts/verify_release.ps1
-          ./scripts/stop.ps1
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/first_run.ps1 -NoBrowser
+          if ($LASTEXITCODE -ne 0) { throw 'Windows wizard failed' }
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/verify_release.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Windows health failed' }
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/stop.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Windows stop failed' }
       - uses: actions/upload-artifact@v4
         if: always()
         with: {name: windows-evidence, path: reports/}

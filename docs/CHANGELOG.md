@@ -6,6 +6,7 @@
 - Realizzata UI React con sette sezioni, grafici osservati, controlli PAPER, stato feed e diagnostica.
 - Implementati wizard Windows riprendibile, launcher, script operativi, backup/restore isolato e aggiornamenti a tag PAPER espliciti.
 - Aggiunti test Python/PostgreSQL, frontend/browser e CI Linux/Windows; release ZIP generata dopo i gate su main.
+- Verificata una connessione WebSocket pubblica reale al prodotto EEA; aggiunto percorso CI Windows del wizard con configurazione esistente, senza apertura browser.
 - Corretti header accessibili delle tabelle e fixture temporali monotone per Windows; aggiunte regressioni per drawdown, stop parziali e idempotenza oltre la finestra runtime.
 - LIVE disabilitato; AI e recovery unattended rimandati alle rispettive fasi. Collaudo sul server di Matteo non eseguito.
 

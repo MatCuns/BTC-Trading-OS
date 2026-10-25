@@ -20,7 +20,7 @@ Richieste REST pubbliche dalla sessione cloud hanno risposto HTTP 200/code 0 per
 
 L'ID è **evidenza della discovery, non un default hardcoded**. Ogni avvio interroga l'API. Zero candidati: PAPER fermo con motivo esplicito; più candidati: selezione locale BTC_INSTRUMENT_ID. Nessuna sostituzione con BTC-USDT-SWAP. Fixture offline è una scelta esplicita con etichetta visibile.
 
-Un secondo probe REST ha avuto timeout nella rete cloud: non è un test di affidabilità di OKX né del server Windows. Streaming pubblico continuo, latency, funding e stabilità della connessione sul server sono da collaudare. Test automatici verificano parsing, ping/pong, timeout, reconnect e blocco stale tramite mock deterministici.
+Un secondo probe REST ha avuto timeout nella rete cloud. Un successivo smoke test del connettore reale ha completato discovery, clock sync e WebSocket con quote valida: offset misurato circa -173ms e lag della singola quote circa 268ms. Nessun ordine inviato; contatore reconnect 0 nel breve campione. Queste misure puntuali non provano affidabilità o latenza di lungo periodo. Funding e stabilità sul server sono da collaudare. Test automatici verificano parsing, ping/pong, timeout, reconnect e blocco stale tramite mock deterministici.
 
 **Disponibilità pubblica non significa abilitazione del conto.** Nessuna autenticazione, verifica di adeguatezza, ordine reale o modifica di account effettuata. Leva restituita dal metadata non sovrascrive i limiti applicativi.
 

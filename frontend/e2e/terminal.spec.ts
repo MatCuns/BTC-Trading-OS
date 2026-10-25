@@ -23,6 +23,7 @@ test('real backend state, navigation and accessible controls',async({page},info)
   await expect(page.getByText('Runtime assumptions')).toBeVisible();
   await page.getByRole('button',{name:'Overview',exact:true}).click();
   await page.getByRole('button',{name:'Engage kill switch'}).click();
+  await expect(page.getByRole('button',{name:'Unlock PAPER execution'})).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
   await page.screenshot({path:`test-results/terminal-${info.project.name}.png`,fullPage:true});
 });

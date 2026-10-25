@@ -161,7 +161,7 @@ async def test_limits_and_environment_isolation(engine):
 async def test_limit_order_and_tick_size(engine):
     orders = await engine.target(request(limit_price=D("64990")))
     assert orders[0].status == "OPEN"
-    await engine.tick(quote("64980"))
+    await engine.tick(quote("64980", stamp=orders[0].created_at + timedelta(milliseconds=1)))
     assert orders[0].status == "FILLED"
     fill = engine.ledger.fills[-1]
     assert fill.price <= D("64990")
