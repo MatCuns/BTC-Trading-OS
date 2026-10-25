@@ -31,10 +31,17 @@ Repository: https://github.com/MatCuns/BTC-Trading-OS
 Leggi AGENTS.md e docs/STATUS.md, verifica branch/codice e continua dallo stato reale.
 Modifica richiesta: [aggiungere / modificare / rimuovere + comportamento atteso].
 Implementa su branch dedicato, verifica i contratti interessati e aggiorna documentazione e handoff.
-Consegna PR, test eseguiti, limitazioni, comandi server e rollback.
+Crea la PR, controlla i risultati e integrala autonomamente in main quando i controlli applicabili passano. Consegna SHA integrato, test, limitazioni, comandi server e rollback. Non chiedermi di premere Merge.
 Non inviare ordini LIVE e non cancellare dati operativi.
 
 ## Qualità e rilascio
 Nessuna CI esiste ancora: sarà creata in R1. Documentazione sola richiede revisione di coerenza/link, non test applicativi inventati.
 Release di codice: eseguire i controlli pertinenti e registrare quelli non disponibili.
 main resta stabile; una PR integrata non aggiorna il server automaticamente.
+
+
+## Autonomia autorizzata
+L'agente gestisce anche commit, PR e merge delle proprie modifiche autorizzate. Questa autorizzazione non sostituisce i controlli: HEAD deve corrispondere allo SHA verificato; test essenziali falliti o protezioni non soddisfatte bloccano il merge. Non integrare PR estranee o simulare una review indipendente. Per documentazione/branding eseguire revisione di coerenza, link e resa; non inventare test applicativi inesistenti.
+
+## Continuità dei prompt
+Usare docs/prompts/01_R1_PAPER.md, poi 02_R2_INTELLIGENCE.md e 03_R3_OPERATIONS.md. Sono autosufficienti: niente contratto comune da incollare separatamente. Non attendere accesso al PC Windows per costruire il software cloud; parametrizzare il wizard e registrare i collaudi mancanti.
