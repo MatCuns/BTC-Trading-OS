@@ -14,7 +14,7 @@ Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bf
 
 ## Test e prove disponibili in questa revisione
 
-- Localmente: ruff, mypy, 21 test Python unitari, TypeScript, 2 test Vitest e build Vite. Browser desktop e mobile verificati con backend di test esplicitamente in memoria; PostgreSQL reale verificato in CI Linux con bootstrap/privilegi e restore completo. La CI finale deve verificare anche Windows e browser mobile prima del merge.
+- Localmente: ruff, mypy, 23 test Python unitari, TypeScript, 2 test Vitest e build Vite. Browser desktop e mobile verificati con backend di test esplicitamente in memoria; PostgreSQL reale verificato in CI Linux con bootstrap/privilegi e restore completo. Il run [40212619378](https://github.com/MatCuns/BTC-Trading-OS/actions/runs/40212619378) sul commit 2bf973149d4dd7f8b0874d097a387704e5789397 ha superato Linux/Windows con PostgreSQL, restore e browser desktop/mobile; il wizard Windows è stato eseguito in PowerShell 5.1 con configurazione esistente e senza aprire il browser. Le successive correzioni di guardia devono mantenere verde la CI dello SHA finale prima del merge.
 - Probe pubblico reale: endpoint time e discovery OKX EEA rispondono 200/code 0. Trovato BTC-USD_UM_XPERP-310404, ctVal 0.0001 BTC, scadenza 4 aprile 2031. Un successivo smoke del connettore ha ricevuto una quote WebSocket reale (offset -173ms, lag puntuale 268ms); un altro probe ha avuto timeout. Non dichiarata affidabilità continuativa.
 - Nessuna chiave, ordine reale, modifica di conto o attivazione LIVE.
 

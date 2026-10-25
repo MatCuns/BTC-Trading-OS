@@ -216,3 +216,9 @@ async def test_idempotency_survives_runtime_window(engine):
     result = await engine.target(request())
     assert result
     assert len(engine.ledger.fills) == count
+
+
+def test_settlement_currency_cannot_silently_change(engine):
+    new = engine.ledger.instrument.model_copy(update={"settle_ccy": "USDC"})
+    with pytest.raises(RiskRejected, match="Settlement currency"):
+        engine.set_instrument(new)

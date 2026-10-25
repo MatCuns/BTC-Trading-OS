@@ -50,6 +50,8 @@ try {
         $dataRoot = Read-Host 'Existing data folder (example E:\BTCData)'
         $backupRoot = Read-Host 'Existing backup folder on a separate destination'
         if (-not (Test-Path $dataRoot -PathType Container) -or -not (Test-Path $backupRoot -PathType Container)) { throw 'Both folders must already exist. Create the folders in Explorer and rerun.' }
+        $dataRoot = [IO.Path]::GetFullPath($dataRoot)
+        $backupRoot = [IO.Path]::GetFullPath($backupRoot)
         if ([IO.Path]::GetFullPath($dataRoot) -eq [IO.Path]::GetFullPath($backupRoot)) { throw 'Data and backup folders must differ.' }
         Write-Host 'Using an existing PostgreSQL service; no new instance or service will be created.'
         $hostName = '127.0.0.1'

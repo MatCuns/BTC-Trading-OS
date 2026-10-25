@@ -4,7 +4,7 @@ export interface State {
   instrument: {inst_id:string; source:string; settle_ccy:string; contract_btc:string; expiry:string|null}|null;
   quote: {last:string; bid:string; ask:string; source:string; timestamp:string}|null;
   account: {cash:string; quantity:string; average_price:string; fees:string; funding:string; realized_pnl:string; kill_switch:boolean; strategy_enabled:boolean};
-  equity:string; unrealized_pnl:string; notional:string; leverage:string; drawdown:string;
+  equity:string|null; unrealized_pnl:string|null; notional:string|null; leverage:string|null; drawdown:string|null;
   feed_age_seconds:number|null; risk_flags:string[]; reason:string;
   orders:Row[]; fills:Row[]; decisions:Row[];
   history:{timestamp:string;price:string;equity:string}[];

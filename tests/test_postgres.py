@@ -61,7 +61,7 @@ def test_resumable_bootstrap_and_minimum_runtime_privileges(tmp_path):
         admin=url.username,
         database="btc_bootstrap_ci",
         password=url.password or "",
-        data_root=str(tmp_path),
+        data_root=str(tmp_path / "dati-à"),
         backup_root=str(tmp_path / "backup"),
         feed_mode="fixture",
     )
@@ -71,7 +71,9 @@ def test_resumable_bootstrap_and_minimum_runtime_privileges(tmp_path):
     assert (tmp_path / ".runtime" / "db-bootstrap.pending.json").exists()
     database_setup(**params)
     assert not (tmp_path / ".runtime" / "db-bootstrap.pending.json").exists()
-    app_url = dotenv_values(tmp_path / ".env")["BTC_DATABASE_URL"]
+    values = dotenv_values(tmp_path / ".env")
+    assert values["BTC_DATA_ROOT"] == str(tmp_path / "dati-à")
+    app_url = values["BTC_DATABASE_URL"]
     with psycopg.connect(
         app_url.replace("postgresql+psycopg", "postgresql"), autocommit=True
     ) as conn:

@@ -32,7 +32,13 @@ class InternalPaperBroker:
     def execute(
         self, order: Order, quote: Quote, instrument: Instrument, account: Account
     ) -> Fill | None:
-        if order.environment_id != self.environment_id or quote.inst_id != order.inst_id:
+        if (
+            any(
+                item.environment_id != self.environment_id
+                for item in (order, quote, instrument, account)
+            )
+            or quote.inst_id != order.inst_id
+        ):
             raise ValueError("Environment or instrument mismatch")
         if order.status not in {"OPEN", "PARTIAL"}:
             return None

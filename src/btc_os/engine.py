@@ -100,6 +100,8 @@ class TradingEngine:
 
     def set_instrument(self, instrument: Instrument) -> None:
         old = self.ledger.instrument
+        if old and old.settle_ccy != instrument.settle_ccy:
+            raise RiskRejected("Settlement currency changed: use a separate PAPER database")
         if (
             old
             and old.inst_id != instrument.inst_id
@@ -299,7 +301,7 @@ class TradingEngine:
                     {
                         "timestamp": quote.timestamp.isoformat(),
                         "price": str(quote.last),
-                        "equity": str(equity),
+                        "equity": str(equity) if self.reconciled else None,
                     }
                 )
                 a.peak_equity = max(a.peak_equity, equity)
@@ -431,11 +433,11 @@ class TradingEngine:
             "instrument": i.model_dump(mode="json") if i else None,
             "quote": q.model_dump(mode="json") if q else None,
             "account": a.model_dump(mode="json"),
-            "equity": str(equity),
-            "unrealized_pnl": str(equity - a.cash),
-            "notional": str(notional),
-            "leverage": str(notional / equity if equity > 0 else 0),
-            "drawdown": str(1 - equity / a.peak_equity),
+            "equity": str(equity) if self.reconciled else None,
+            "unrealized_pnl": str(equity - a.cash) if self.reconciled else None,
+            "notional": str(notional) if self.reconciled else None,
+            "leverage": str(notional / equity if equity > 0 else 0) if self.reconciled else None,
+            "drawdown": str(1 - equity / a.peak_equity) if self.reconciled else None,
             "feed_age_seconds": age,
             "risk_flags": flags,
             "reason": self.reason,

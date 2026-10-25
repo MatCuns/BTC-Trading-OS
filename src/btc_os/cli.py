@@ -40,6 +40,8 @@ def database_setup(
     with psycopg.connect(
         host=host, port=port, user=admin, password=password, dbname="postgres", autocommit=True
     ) as conn:
+        if conn.info.server_version < 160000:
+            raise ValueError("PostgreSQL 16 or newer is required; no resources were changed")
         exists = conn.execute(
             "SELECT pg_get_userbyid(datdba) FROM pg_database WHERE datname=%s", (database,)
         ).fetchone()
@@ -123,7 +125,7 @@ def database_setup(
             )
         )
     url = f"postgresql+psycopg://{role}:{app_password}@{host}:{port}/{database}"
-    contents = f"BTC_DATABASE_URL={url}\nBTC_DATA_ROOT={json.dumps(data_root)}\nBTC_BACKUP_ROOT={json.dumps(backup_root)}\nBTC_FEED_MODE={feed_mode}\n"
+    contents = f"BTC_DATABASE_URL={url}\nBTC_DATA_ROOT={json.dumps(data_root, ensure_ascii=False)}\nBTC_BACKUP_ROOT={json.dumps(backup_root, ensure_ascii=False)}\nBTC_FEED_MODE={feed_mode}\n"
     temporary = pending.parent / "configured.env.pending"
     temporary.write_text(contents, encoding="utf-8")
     temporary.chmod(0o600)

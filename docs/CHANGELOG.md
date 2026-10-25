@@ -8,6 +8,8 @@
 - Aggiunti test Python/PostgreSQL, frontend/browser e CI Linux/Windows; release ZIP generata dopo i gate su main.
 - Verificata una connessione WebSocket pubblica reale al prodotto EEA; aggiunto percorso CI Windows del wizard con configurazione esistente, senza apertura browser.
 - Corretti header accessibili delle tabelle e fixture temporali monotone per Windows; aggiunte regressioni per drawdown, stop parziali e idempotenza oltre la finestra runtime.
+- Supportati percorsi Windows Unicode, normalizzati dal wizard; bootstrap rifiuta server PostgreSQL precedenti alla versione 16.
+- KPI sconosciuti esplicitamente vuoti quando il ledger non è riconciliato; cambio valuta settlement bloccato senza database PAPER separato.
 - LIVE disabilitato; AI e recovery unattended rimandati alle rispettive fasi. Collaudo sul server di Matteo non eseguito.
 
 ## Unreleased - 2026-10-25

@@ -116,6 +116,9 @@ async def test_demo_header_signature_and_environment_gate():
 
 
 async def test_mock_websocket_heartbeat_and_timeout(engine):
+    # A fresh discovery must not reuse the fixture's previous settlement context.
+    engine.ledger.instrument = None
+    engine.quote = None
     feed = MarketFeed(engine)
     row = metadata()
     ticker = {
@@ -150,3 +153,15 @@ async def test_reconnect_backoff_and_cancellation(engine):
             await feed.run()
     assert feed.metrics["reconnects"] == 1
     assert not feed.metrics["connected"]
+
+
+def test_unavailable_database_does_not_invent_account_kpis(tmp_path):
+    store = MemoryStore()
+    store.fail = True
+    app = create_app(Settings(data_root=tmp_path, _env_file=None), store, start_feed=False)
+    with TestClient(app) as client:
+        state = client.get("/api/state").json()
+        assert state["equity"] is None
+        assert state["leverage"] is None
+        assert state["system"]["reconciled"] is False
+        assert "PERSISTENCE_UNKNOWN" in state["risk_flags"]
