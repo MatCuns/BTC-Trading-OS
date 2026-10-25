@@ -1,40 +1,44 @@
 # Stato del progetto
 
-Ultimo aggiornamento: 25 ottobre 2026.
-Questo è il punto di ingresso per riprendere lo sviluppo. Si riferisce al branch che lo contiene; verificare sempre branch e commit aperti.
+Ultimo aggiornamento: 25 ottobre 2026. Riferimento iniziale di questa revisione: `main` a `7fa3d0192901c741c81a166a67d0872e9e57486f` (PR #1 già integrata). Questo file descrive il branch che lo contiene: controllare sempre HEAD reale.
 
-## Situazione verificata
-- Base ispezionata: main, commit fb7f89e46057f035c35e48a180264451ef0ce6f8.
-- Su quella base esistevano soltanto README.md e LICENSE (MIT).
-- Questo aggiornamento aggiunge documentazione di coordinamento e istruzioni agenti.
-- Nessun codice applicativo, schema DB, UI, script Windows o pipeline CI è stato implementato.
-- Nessuna release installabile e nessun test di trading eseguito.
-- Setup e prestazioni del server dell'utente: non verificati.
-- Disponibilità del prodotto e abilitazione del conto OKX: non verificate.
-- Modalità LIVE: non implementata e non attivata.
+## In una frase
 
-## Roadmap
-| Release | Risultato | Stato |
+**Preparazione del repository completata; sviluppo applicativo R1 da avviare con Astra.**
+
+## Disponibile
+
+- README di prodotto, asset grafici e mockup concettuale del terminale.
+- AGENTS.md: mandato autonomo per modifiche, test, PR e merge delle modifiche autorizzate.
+- START_HERE: una sola istruzione per iniziare, senza allegare il PDF.
+- Tre mega prompt autosufficienti in docs/prompts.
+- Guide di architettura prevista, sviluppo, operazioni e cronologia.
+
+## Non ancora implementato
+
+Codice applicativo, feed OKX, broker PAPER, schema DB, UI funzionante, Ollama integrato, script first_run/update, CI, release installabili e modalità LIVE. Il mockup nel README non è un'app eseguibile.
+
+## Roadmap e gate
+
+| Fase | Risultato da ottenere | Stato |
 | --- | --- | --- |
-| R1 | Feed OKX, broker PAPER, ledger PostgreSQL, rischio e prima UI | Da implementare |
-| R2 | Collector, Ollama, scoring e analytics/UI completa | Pianificata |
-| R3 | Recupero, avvio automatico, adapter verificato e gate LIVE | Pianificata |
+| Preparazione repo | Identità, documenti, prompt e continuità | Completata nel branch di questa revisione |
+| R1 | Feed pubblico, PAPER, PostgreSQL, rischio, UI e wizard | Da implementare |
+| R2 | Collector, Ollama, score, analytics e UI completa | Pianificata |
+| R3 | Recupero/boot, adapter regionale verificato e gate LIVE | Pianificata |
 
-## Prossima azione
-1. Integrare la PR di documentazione in main.
-2. Matteo prepara Windows, percorsi dati, PostgreSQL, Ollama e checkout locale secondo il manuale.
-3. Astra esegue il Prompt A sul repository canonico, dopo aver letto AGENTS.md.
-4. Creare docs/OKX_COMPATIBILITY.md e script completi per setup/collaudo durante R1.
+## Prossima azione concreta
 
-## Blocchi e informazioni mancanti
-Percorso dati/backup reale, versione e supporto Windows, versioni installate, regione/abilitazione OKX, esito benchmark Ollama. Non inserire credenziali qui.
+Matteo seleziona il repository nell'ambiente Astra e usa il messaggio in [START_HERE](START_HERE.md). Astra legge ed esegue [Prompt A](prompts/01_R1_PAPER.md), costruisce R1 e integra la propria PR dopo i controlli. Nessuna operazione manuale su PR #1: è già stata integrata.
 
-## Handoff da aggiornare in ogni sessione
-- Branch e PR di lavoro: indicare il branch corrente e il link della PR.
-- Ultimo commit noto: indicare SHA disponibile, non inventare il commit che contiene questo testo.
-- Implementato: elenco breve con percorsi.
-- Test eseguiti: comandi, ambiente, esiti.
-- Non testato: controlli Windows/exchange ancora da eseguire.
-- Problemi aperti: sintomo e prossimo controllo.
-- Prossima azione concreta: un'attività eseguibile.
-- Release installata sul server: ignota finché Matteo non la conferma; non dedurla dal merge.
+## Verifiche e limiti
+
+- Verificati: contenuto iniziale del repository, merge PR #1, accesso GitHub nella sessione che prepara questi documenti.
+- In questa revisione: controllo di coerenza/link dei documenti e rendering degli asset; nessun test applicativo esistente.
+- Non verificati: setup Windows, percorsi dati/backup, versioni locali, benchmark GPU/LLM, prodotto/abilitazione del conto OKX.
+- Release installata sul server: ignota. Non dedurla da main.
+- LIVE: non implementato e mai attivato.
+
+## Handoff obbligatorio per ogni sessione
+
+Branch/PR e ultimo commit noto; file implementati; comandi di test con ambiente/esito; controlli non eseguiti; problemi aperti; prossima azione; release installata sul server se confermata. Non inventare lo SHA del commit che sta ancora per essere creato.

@@ -8,7 +8,10 @@
 - Il repository è pubblico alla verifica del 25 ottobre 2026. Mai inserire segreti, log non redatti o dati di conto.
 
 ## Lavoro e consegna
-- Usare un feature branch e una PR; non modificare direttamente main.
+- Usare un feature branch e una PR. L'utente autorizza l'agente a integrare automaticamente la propria PR dopo i controlli applicabili, senza chiedergli di premere Merge.
+- Controllare HEAD e integrare solo lo SHA verificato. Non unire PR estranee, non aggirare check o protezioni, non abilitare auto-merge indiscriminato.
+- Distinguere merge del codice e installazione sul server. Non attendere approvazione utente per il normale lavoro di sviluppo già autorizzato.
+- I prompt completi sono in docs/prompts; l'ingresso per Matteo è docs/START_HERE.md.
 - Preservare il lavoro esistente e LICENSE. Non sovrascrivere o cancellare modifiche umane.
 - Implementare file reali e verificare le funzionalità interessate.
 - Distinguere sempre implementato, testato in CI, verificato sul server Windows e pianificato.
@@ -32,3 +35,14 @@ Verificare docs regionali e strumento effettivo: non assumere BTC-USDT-SWAP.
 X-Perps ha scadenza; verificare tipo, metadata, contract size, tick/lot, fee e restrizioni del conto.
 Nessuna sostituzione silenziosa del prodotto. Funzioni non supportate restano esplicite e bloccate.
 Nessun test deve inviare ordini reali, modificare account reali o cancellare dati operativi.
+
+
+## Identità visiva e stato reale
+Preservare il marchio BTC Quant OS, gli asset in docs/assets e la struttura leggibile del README.
+Il mockup del terminale è un concept, non screenshot di software funzionante. Non rimuovere questa distinzione finché la UI reale non è disponibile.
+Non mostrare badge di CI verde, copertura o rendimenti inventati. Aggiornare status e release solo su evidenze.
+
+## Procedura guidata come requisito R1
+Creare scripts/first_run.ps1 e scripts/update.ps1; non affermare che esistano prima di averli implementati.
+Gestire dipendenze ufficiali, percorsi, database e avvio in un percorso riprendibile. Nessun segreto in GitHub, nessuna formattazione o ordine LIVE.
+Se l'agente lavora in cloud, non chiedere un setup Windows preventivo per poter cominciare a scrivere e verificare il codice.

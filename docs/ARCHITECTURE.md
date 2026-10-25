@@ -25,3 +25,4 @@ BrokerAdapter, eventi di mercato, ledger idempotente, stati ordini e riconciliaz
 Convalidare specifiche e strumenti OKX SEE nelle docs regionali: gli X-Perps sono contratti con scadenza.
 
 Aggiornare questo file quando il codice realizza o cambia questa proposta.
+
