@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-paper — 2026-10-25
+- Implementato core PAPER, ledger PostgreSQL separati, rischio indipendente, feed OKX EEA con discovery e fixture esplicita.
+- Aggiunti partial fills, fee/slippage, stop simulati, reverse durabile, idempotenza e riconciliazione al riavvio.
+- Realizzata UI React con sette sezioni, grafici osservati, controlli PAPER, stato feed e diagnostica.
+- Implementati wizard Windows riprendibile, launcher, script operativi, backup/restore isolato e aggiornamenti a tag PAPER espliciti.
+- Aggiunti test Python/PostgreSQL, frontend/browser e CI Linux/Windows; release ZIP generata dopo i gate su main.
+- LIVE disabilitato; AI e recovery unattended rimandati alle rispettive fasi. Collaudo sul server di Matteo non eseguito.
+
 ## Unreleased - 2026-10-25
 - PR #1 già integrata in main; rimosse le istruzioni obsolete che chiedevano di approvarla.
 - Nuova identità visiva BTC Quant OS, README di prodotto e concept del terminale chiaramente etichettato.

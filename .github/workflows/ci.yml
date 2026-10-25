@@ -1,0 +1,126 @@
+name: R1 quality and PAPER release
+on:
+  pull_request:
+  push:
+    branches: [main, feat/r1-paper]
+permissions:
+  contents: read
+concurrency:
+  group: r1-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres, POSTGRES_DB: btc_test}
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      BTC_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/btc_test
+      BTC_TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/btc_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip}
+      - run: python -m pip install -r requirements/dev.txt -e .
+      - run: ruff check src tests migrations scripts/*.py
+      - run: ruff format --check src tests migrations scripts/*.py
+      - run: mypy src
+      - run: python -m alembic upgrade head
+      - run: pytest -q --junitxml=reports/pytest-linux.xml
+      - run: python scripts/ci_backup_check.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: backend-evidence, path: reports/}
+  windows:
+    runs-on: windows-latest
+    env:
+      BTC_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:55432/btc_test
+      BTC_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:55432/btc_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: |
+          python -m venv .venv
+          "${{ github.workspace }}\.venv\Scripts" | Out-File $env:GITHUB_PATH -Encoding utf8 -Append
+      - run: python -m pip install -r requirements/dev.txt -e .
+      - run: ./scripts/test_scripts.ps1
+      - run: ./scripts/ci_postgres.ps1
+      - run: python -m alembic upgrade head
+      - run: pytest -q --junitxml=reports/pytest-windows.xml
+      - run: python scripts/ci_backup_check.py
+      - name: Native Windows process boot, health and stop
+        run: |
+          'BTC_FEED_MODE=fixture' | Set-Content .env -Encoding ascii
+          ./scripts/start.ps1
+          ./scripts/verify_release.ps1
+          ./scripts/stop.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: windows-evidence, path: reports/}
+  frontend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_PASSWORD: postgres, POSTGRES_DB: btc_browser}
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      BTC_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/btc_browser
+      BTC_FEED_MODE: fixture
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m venv .venv
+      - run: .venv/bin/python -m pip install -r requirements/runtime.txt -e .
+      - run: .venv/bin/python -m alembic upgrade head
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm, cache-dependency-path: frontend/package-lock.json}
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run typecheck && npm test && npm run build
+        working-directory: frontend
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: npm run test:e2e -- --workers=1
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: browser-evidence, path: 'frontend/test-results/'}
+      - uses: actions/upload-artifact@v4
+        with: {name: compiled-terminal, path: 'frontend/dist/'}
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [backend, windows, frontend]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: {name: compiled-terminal, path: frontend/dist}
+      - run: python scripts/build_release.py
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const tag = 'v0.1.0-paper';
+            const {owner, repo} = context.repo;
+            try {
+              await github.rest.repos.getReleaseByTag({owner, repo, tag});
+              core.info('Existing release preserved; no tag or asset overwrite.');
+              return;
+            } catch (e) { if (e.status !== 404) throw e; }
+            const release = await github.rest.repos.createRelease({owner, repo, tag_name: tag,
+              target_commitish: context.sha, name: 'BTC Quant OS · R1 PAPER', draft: false, prerelease: false,
+              body: fs.readFileSync('docs/RELEASE_R1.md', 'utf8')});
+            for (const name of fs.readdirSync('release')) {
+              const data = fs.readFileSync('release/' + name);
+              await github.rest.repos.uploadReleaseAsset({owner, repo, release_id: release.data.id,
+                name, data, headers: {'content-type': 'application/octet-stream', 'content-length': data.length}});
+            }

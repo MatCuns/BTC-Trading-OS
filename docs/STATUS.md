@@ -1,44 +1,35 @@
 # Stato del progetto
 
-Ultimo aggiornamento: 25 ottobre 2026. Riferimento iniziale di questa revisione: `main` a `7fa3d0192901c741c81a166a67d0872e9e57486f` (PR #1 già integrata). Questo file descrive il branch che lo contiene: controllare sempre HEAD reale.
+Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bfb2ea9a9cd` (PR #2 già integrata). Questa revisione introduce R1 sul branch `feat/r1-paper`; verificare sempre HEAD/CI effettivi.
 
-## In una frase
+## Implementato
 
-**Preparazione del repository completata; sviluppo applicativo R1 da avviare con Astra.**
+- Backend Python 3.12/FastAPI e frontend React/TypeScript dark, sette sezioni, WebSocket push, grafico osservato, ordini/posizioni, rischio e diagnostica.
+- Feed pubblico OKX EEA, discovery FUTURES/xperp senza swap hardcoded, size/precision lineari validate, clock sync, heartbeat/reconnect/stale, trade aggregati, funding opzionale. Fixture offline esplicita.
+- Broker PAPER: fee/slippage configurati, partial fills, limiti, stop simulati; target long/short/flat, riduzioni, reverse in due fasi, client ID idempotenti.
+- Risk engine indipendente: cap tecnico 5x/configurato 1x, budget trade 0,5%, daily loss/drawdown, costi, margine e blocco su persistenza/ordine/feed incerti. Kill switch UI e ReferenceStrategy opt-in, OFF al riavvio.
+- PostgreSQL/Alembic: market/system e ledger PAPER/LIVE separati con CHECK e privilegi minimi; transazioni, checkpoint, startup reconciliation e storico durabile.
+- START_PAPER.bat + wizard riprendibile, UPDATE_PAPER.bat, start/stop/health/doctor/verify, task al logon opzionale, backup e restore separato non distruttivo. Nessun prerequisito LLM.
+- CI Linux/Windows, PostgreSQL reale, restore, controlli Python e frontend, browser desktop/mobile. Workflow release con ZIP comprensivo di UI compilata e SHA-256, eseguito solo dopo i check su main.
 
-## Disponibile
+## Test e prove disponibili in questa revisione
 
-- README di prodotto, asset grafici e mockup concettuale del terminale.
-- AGENTS.md: mandato autonomo per modifiche, test, PR e merge delle modifiche autorizzate.
-- START_HERE: una sola istruzione per iniziare, senza allegare il PDF.
-- Tre mega prompt autosufficienti in docs/prompts.
-- Guide di architettura prevista, sviluppo, operazioni e cronologia.
+- Localmente: ruff, mypy, pytest unitari, TypeScript, Vitest e build Vite. Integrazioni PostgreSQL e collaudi browser/Windows sono definiti in CI; consultare l'esito definitivo prima del merge.
+- Probe pubblico reale: endpoint time e discovery OKX EEA rispondono 200/code 0. Trovato BTC-USD_UM_XPERP-310404, ctVal 0.0001 BTC, scadenza 4 aprile 2031. Un successivo probe ha avuto timeout; non dichiarata affidabilità continuativa.
+- Nessuna chiave, ordine reale, modifica di conto o attivazione LIVE.
 
-## Non ancora implementato
+## Non verificato / limiti espliciti
 
-Codice applicativo, feed OKX, broker PAPER, schema DB, UI funzionante, Ollama integrato, script first_run/update, CI, release installabili e modalità LIVE. Il mockup nel README non è un'app eseguibile.
+- Server Windows di Matteo, setup completo con installer e consensi OS, volumi/cluster PostgreSQL reali, backup fisico, GPU/CPU/RAM: **NOT TESTED**. Un runner Windows non è il server.
+- Disponibilità dello strumento sul conto e demo, stop/margine/reduce-only effettivi exchange: NOT TESTED. Demo è una utility separata, non selezionabile dalla UI R1.
+- Funding incompleto se API non disponibile o durante downtime; no modello di liquidazione/coda/market impact. Fee ipotizzate, nessuna valutazione di rendimento della strategia.
+- data_root applicativo non trasferisce un cluster PostgreSQL esistente. Recovery unattended senza logon, gate LIVE e intelligence sono R3/R2.
+- Release installata sul server: **non confermata**.
 
-## Roadmap e gate
+## Prossima azione per Matteo
 
-| Fase | Risultato da ottenere | Stato |
-| --- | --- | --- |
-| Preparazione repo | Identità, documenti, prompt e continuità | Completata nel branch di questa revisione |
-| R1 | Feed pubblico, PAPER, PostgreSQL, rischio, UI e wizard | Da implementare |
-| R2 | Collector, Ollama, score, analytics e UI completa | Pianificata |
-| R3 | Recupero/boot, adapter regionale verificato e gate LIVE | Pianificata |
+Dopo pubblicazione della release verificata: scaricare lo ZIP PAPER ed eseguire START_PAPER.bat sul server. [Guida](START_HERE.md) e [collaudo](ACCEPTANCE.md). Nessuna PR da approvare.
 
-## Prossima azione concreta
+## Handoff
 
-Matteo seleziona il repository nell'ambiente Astra e usa il messaggio in [START_HERE](START_HERE.md). Astra legge ed esegue [Prompt A](prompts/01_R1_PAPER.md), costruisce R1 e integra la propria PR dopo i controlli. Nessuna operazione manuale su PR #1: è già stata integrata.
-
-## Verifiche e limiti
-
-- Verificati: contenuto iniziale del repository, merge PR #1, accesso GitHub nella sessione che prepara questi documenti.
-- In questa revisione: controllo di coerenza/link dei documenti e rendering degli asset; nessun test applicativo esistente.
-- Non verificati: setup Windows, percorsi dati/backup, versioni locali, benchmark GPU/LLM, prodotto/abilitazione del conto OKX.
-- Release installata sul server: ignota. Non dedurla da main.
-- LIVE: non implementato e mai attivato.
-
-## Handoff obbligatorio per ogni sessione
-
-Branch/PR e ultimo commit noto; file implementati; comandi di test con ambiente/esito; controlli non eseguiti; problemi aperti; prossima azione; release installata sul server se confermata. Non inventare lo SHA del commit che sta ancora per essere creato.
+Branch feat/r1-paper; base nota ca98d64; codice/docs/test nella stessa revisione. In caso di CI fallita, correggere sul branch e verificare lo SHA finale prima del merge. Nessun tag PAPER finché i gate software disponibili non passano; collaudo server distinto. R2 non avviata. Vedere CHANGELOG, ARCHITECTURE, OPERATIONS e OKX_COMPATIBILITY.

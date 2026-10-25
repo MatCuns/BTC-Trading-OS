@@ -35,7 +35,7 @@ Crea la PR, controlla i risultati e integrala autonomamente in main quando i con
 Non inviare ordini LIVE e non cancellare dati operativi.
 
 ## Qualità e rilascio
-Nessuna CI esiste ancora: sarà creata in R1. Documentazione sola richiede revisione di coerenza/link, non test applicativi inventati.
+La CI R1 esegue ruff, mypy, pytest con PostgreSQL reale su Linux/Windows, parsing PowerShell, boot del processo Windows e test browser desktop/mobile. Le modifiche solo documentali richiedono revisione di coerenza/link.
 Release di codice: eseguire i controlli pertinenti e registrare quelli non disponibili.
 main resta stabile; una PR integrata non aggiorna il server automaticamente.
 
@@ -45,3 +45,19 @@ L'agente gestisce anche commit, PR e merge delle proprie modifiche autorizzate. 
 
 ## Continuità dei prompt
 Usare docs/prompts/01_R1_PAPER.md, poi 02_R2_INTELLIGENCE.md e 03_R3_OPERATIONS.md. Sono autosufficienti: niente contratto comune da incollare separatamente. Non attendere accesso al PC Windows per costruire il software cloud; parametrizzare il wizard e registrare i collaudi mancanti.
+
+## Comandi R1 per lo sviluppatore
+```bash
+python3.12 -m venv .venv
+# Attivare la venv secondo la shell, poi:
+python -m pip install -r requirements/dev.txt -e .
+ruff check src tests migrations scripts/*.py
+ruff format --check src tests migrations scripts/*.py
+mypy src
+pytest -q
+npm ci --prefix frontend
+npm run typecheck --prefix frontend
+npm test --prefix frontend
+npm run build --prefix frontend
+```
+I test unitari usano un double esplicito, mai un DB di produzione. Per le integrazioni configurare **un database PostgreSQL nuovo e isolato**, impostare BTC_DATABASE_URL e BTC_TEST_DATABASE_URL allo stesso database, poi `python -m alembic upgrade head` prima di pytest. Il test bootstrap crea solo `btc_bootstrap_ci` e `btc_app` nel cluster CI dedicato; non eseguire la suite d'integrazione sul cluster operativo. `scripts/ci_*` sono esclusivamente per CI.

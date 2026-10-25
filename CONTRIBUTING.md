@@ -1,6 +1,6 @@
 # Contributing
 
-Start with [AGENTS.md](AGENTS.md) and [docs/STATUS.md](docs/STATUS.md). The current repository is a documented product foundation, not a working trading release.
+Start with [AGENTS.md](AGENTS.md) and [docs/STATUS.md](docs/STATUS.md). R1 implements an internal PAPER terminal. Keep software verification separate from acceptance on the owner's Windows server.
 
 ## Change workflow
 1. Describe the observable behavior, failure cases and relevant environment.
