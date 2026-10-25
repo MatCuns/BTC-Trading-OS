@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0-paper — 2026-10-25
+- Gate software verificati: 25 pytest su Linux e Windows, restore isolati, wizard PowerShell 5.1 con configurazione esistente, 2 Vitest e 2 browser desktop/mobile. Evidenze e limiti in STATUS/ACCEPTANCE.
 - Implementato core PAPER, ledger PostgreSQL separati, rischio indipendente, feed OKX EEA con discovery e fixture esplicita.
 - Aggiunti partial fills, fee/slippage, stop simulati, reverse durabile, idempotenza e riconciliazione al riavvio.
 - Realizzata UI React con sette sezioni, grafici osservati, controlli PAPER, stato feed e diagnostica.

@@ -1,6 +1,6 @@
 # Stato del progetto
 
-Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bfb2ea9a9cd` (PR #2 già integrata). Questa revisione introduce R1 sul branch `feat/r1-paper`; verificare sempre HEAD/CI effettivi.
+Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bfb2ea9a9cd` (PR #2 già integrata). R1 implementata e verificata; consegna tramite PR [#3](https://github.com/MatCuns/BTC-Trading-OS/pull/3), branch `feat/r1-paper`. Controllare HEAD reale: il riferimento di test seguente identifica il codice verificato senza inventare lo SHA di questa revisione documentale.
 
 ## Implementato
 
@@ -14,7 +14,9 @@ Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bf
 
 ## Test e prove disponibili in questa revisione
 
-- Localmente: ruff, mypy, 23 test Python unitari, TypeScript, 2 test Vitest e build Vite. Browser desktop e mobile verificati con backend di test esplicitamente in memoria; PostgreSQL reale verificato in CI Linux con bootstrap/privilegi e restore completo. Il run [40212619378](https://github.com/MatCuns/BTC-Trading-OS/actions/runs/40212619378) sul commit 2bf973149d4dd7f8b0874d097a387704e5789397 ha superato Linux/Windows con PostgreSQL, restore e browser desktop/mobile; il wizard Windows è stato eseguito in PowerShell 5.1 con configurazione esistente e senza aprire il browser. Le successive correzioni di guardia devono mantenere verde la CI dello SHA finale prima del merge.
+- Localmente: ruff, mypy, **23 test Python unitari**, TypeScript, **2 test Vitest**, build Vite e **2 test browser desktop/mobile** con backend di test esplicitamente in memoria. Due integrazioni PostgreSQL sono escluse solo dal test locale senza DB.
+- **CI PASS** sul codice `0992cd48ee719a72b83a79841df03012ee2b9b26`: [run 40213022097](https://github.com/MatCuns/BTC-Trading-OS/actions/runs/40213022097). **25 test Python su Linux/PostgreSQL 16 e 25 su Windows/PostgreSQL 17**, bootstrap riprendibile, privilegi minimi, backup con ruolo applicativo e restore completo isolato. Ruff/format/mypy PASS; 2 Vitest e 2 browser desktop/mobile con PostgreSQL reale PASS.
+- **Windows runner PASS:** parsing di tutti gli script e first_run con configurazione esistente in **PowerShell 5.1**, installazione dipendenze/build UI, start/health/verify/stop; browser non aperto nel test. Nessun task permanente o installer OS eseguito in CI. Il percorso con scelte interattive e consensi installer sul server reale resta NOT TESTED.
 - Probe pubblico reale: endpoint time e discovery OKX EEA rispondono 200/code 0. Trovato BTC-USD_UM_XPERP-310404, ctVal 0.0001 BTC, scadenza 4 aprile 2031. Un successivo smoke del connettore ha ricevuto una quote WebSocket reale (offset -173ms, lag puntuale 268ms); un altro probe ha avuto timeout. Non dichiarata affidabilità continuativa.
 - Nessuna chiave, ordine reale, modifica di conto o attivazione LIVE.
 
@@ -28,8 +30,8 @@ Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bf
 
 ## Prossima azione per Matteo
 
-Dopo pubblicazione della release verificata: scaricare lo ZIP PAPER ed eseguire START_PAPER.bat sul server. [Guida](START_HERE.md) e [collaudo](ACCEPTANCE.md). Nessuna PR da approvare.
+Scaricare lo ZIP dalla release `v0.1.0-paper` ed eseguire START_PAPER.bat sul server. Il workflow pubblica il tag/asset soltanto dopo i check su main; se la pubblicazione non è ancora conclusa, controllare la pagina Actions senza ricostruire R1. [Guida](START_HERE.md) e [collaudo](ACCEPTANCE.md). Nessuna PR da approvare.
 
 ## Handoff
 
-PR [#3](https://github.com/MatCuns/BTC-Trading-OS/pull/3), branch feat/r1-paper; primo commit implementativo 5342c2e9f37b6e3a169bbd1f4e2be74afcd7455d; base nota ca98d64; codice/docs/test nella stessa revisione. In caso di CI fallita, correggere sul branch e verificare lo SHA finale prima del merge. Nessun tag PAPER finché i gate software disponibili non passano; collaudo server distinto. R2 non avviata. Vedere CHANGELOG, ARCHITECTURE, OPERATIONS e OKX_COMPATIBILITY.
+PR [#3](https://github.com/MatCuns/BTC-Trading-OS/pull/3), branch feat/r1-paper; ultimo commit applicativo verificato `0992cd48ee719a72b83a79841df03012ee2b9b26`, base main ca98d64. Questa revisione finale aggiorna solo la registrazione delle evidenze. L'agente verifica nuovamente HEAD e integra la propria PR dopo la CI finale; pubblicazione automatica dello ZIP dopo i gate su main. Installazione sul server non confermata. R2 non avviata. Vedere CHANGELOG, ARCHITECTURE, OPERATIONS e OKX_COMPATIBILITY.

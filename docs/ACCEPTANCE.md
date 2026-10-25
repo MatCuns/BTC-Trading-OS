@@ -1,5 +1,7 @@
 # Collaudo R1 — evidenze e gate
 
+**Software R1: PASS** sul commit `0992cd48ee719a72b83a79841df03012ee2b9b26`, [CI 40213022097](https://github.com/MatCuns/BTC-Trading-OS/actions/runs/40213022097): 25 pytest su Linux e Windows, restore isolati, wizard con configurazione esistente in PowerShell 5.1, 2 Vitest e 2 browser desktop/mobile. Nessuna di queste prove è il collaudo del server di Matteo.
+
 I test automatici sono definiti nella [CI](../.github/workflows/ci.yml). Gli esiti definitivi sono nel run collegato alla PR integrata; non confondere test su runner Windows con il server Xeon di Matteo.
 
 | Criterio R1 | Verifica software | Sul server Windows di Matteo |
