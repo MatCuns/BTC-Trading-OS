@@ -1,3 +1,4 @@
+from datetime import timedelta
 from decimal import Decimal
 
 import pytest
@@ -50,7 +51,14 @@ class MemoryStore:
         return not self.fail
 
 
+_last_stamp = now()
+
+
 def quote(price="65000", size="1000", stamp=None):
+    global _last_stamp
+    if stamp is None:
+        stamp = max(now(), _last_stamp + timedelta(microseconds=1))
+        _last_stamp = stamp
     p = Decimal(price)
     return Quote(
         inst_id="FIXTURE-BTC-LINEAR",

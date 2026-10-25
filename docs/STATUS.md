@@ -14,7 +14,7 @@ Aggiornato il 25 ottobre 2026. Base letta: main `ca98d64ba03e654aa184c67e99428bf
 
 ## Test e prove disponibili in questa revisione
 
-- Localmente: ruff, mypy, pytest unitari, TypeScript, Vitest e build Vite. Integrazioni PostgreSQL e collaudi browser/Windows sono definiti in CI; consultare l'esito definitivo prima del merge.
+- Localmente: ruff, mypy, 21 test Python unitari, TypeScript, 2 test Vitest e build Vite. Browser desktop verificato con backend di test esplicitamente in memoria; PostgreSQL reale verificato in CI Linux con bootstrap/privilegi e restore completo. La CI finale deve verificare anche Windows e browser mobile prima del merge.
 - Probe pubblico reale: endpoint time e discovery OKX EEA rispondono 200/code 0. Trovato BTC-USD_UM_XPERP-310404, ctVal 0.0001 BTC, scadenza 4 aprile 2031. Un successivo probe ha avuto timeout; non dichiarata affidabilità continuativa.
 - Nessuna chiave, ordine reale, modifica di conto o attivazione LIVE.
 
@@ -32,4 +32,4 @@ Dopo pubblicazione della release verificata: scaricare lo ZIP PAPER ed eseguire 
 
 ## Handoff
 
-Branch feat/r1-paper; base nota ca98d64; codice/docs/test nella stessa revisione. In caso di CI fallita, correggere sul branch e verificare lo SHA finale prima del merge. Nessun tag PAPER finché i gate software disponibili non passano; collaudo server distinto. R2 non avviata. Vedere CHANGELOG, ARCHITECTURE, OPERATIONS e OKX_COMPATIBILITY.
+PR [#3](https://github.com/MatCuns/BTC-Trading-OS/pull/3), branch feat/r1-paper; primo commit implementativo 5342c2e9f37b6e3a169bbd1f4e2be74afcd7455d; base nota ca98d64; codice/docs/test nella stessa revisione. In caso di CI fallita, correggere sul branch e verificare lo SHA finale prima del merge. Nessun tag PAPER finché i gate software disponibili non passano; collaudo server distinto. R2 non avviata. Vedere CHANGELOG, ARCHITECTURE, OPERATIONS e OKX_COMPATIBILITY.

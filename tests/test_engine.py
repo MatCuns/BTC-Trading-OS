@@ -184,3 +184,35 @@ def test_strategy_warmup_default_flat():
     e = TradingEngine(Settings(_env_file=None), store)
     e.start()
     assert not e.ledger.account.strategy_enabled
+
+
+async def test_drawdown_rejection_and_protective_partial_stop(engine):
+    engine.ledger.account.peak_equity = D("12000")
+    with pytest.raises(RiskRejected, match="drawdown"):
+        await engine.target(request())
+    engine.ledger.account.peak_equity = D("10000")
+    await engine.target(request())
+    previous = engine.ledger.account.quantity
+    await engine.tick(quote("63000", size="1"))
+    assert 0 < engine.ledger.account.quantity < previous
+    assert engine.ledger.account.kill_switch
+    await engine.tick(quote("63001"))
+    assert engine.ledger.account.quantity == 0
+
+
+async def test_duplicate_quote_does_not_replay_fills(engine):
+    await engine.tick(quote(size="1"))
+    await engine.target(request())
+    count = len(engine.ledger.fills)
+    await engine.tick(engine.quote)
+    assert len(engine.ledger.fills) == count
+
+
+async def test_idempotency_survives_runtime_window(engine):
+    await engine.target(request())
+    count = len(engine.ledger.fills)
+    # SQL retains this request even when removed from the bounded in-memory window.
+    engine.ledger.requests.pop("orderA")
+    result = await engine.target(request())
+    assert result
+    assert len(engine.ledger.fills) == count

@@ -2,7 +2,7 @@ name: R1 quality and PAPER release
 on:
   pull_request:
   push:
-    branches: [main, feat/r1-paper]
+    branches: [main]
 permissions:
   contents: read
 concurrency:

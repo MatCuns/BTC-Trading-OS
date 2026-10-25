@@ -83,6 +83,8 @@ def fixture_instrument() -> Instrument:
 
 
 def parse_ticker(row: dict[str, Any], instrument: Instrument) -> Quote:
+    if row.get("instId") != instrument.inst_id:
+        raise ValueError("Ticker instrument does not match discovery")
     return Quote(
         inst_id=row["instId"],
         bid=Decimal(row["bidPx"]),
