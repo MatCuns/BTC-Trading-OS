@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img alt="Stage: pre-implementation" src="https://img.shields.io/badge/stage-pre--implementation-ffb454?style=flat-square" />
+  <img alt="Stage: R1 PAPER" src="https://img.shields.io/badge/stage-R1_PAPER-4fe0b6?style=flat-square" />
   <img alt="Platform target: Windows" src="https://img.shields.io/badge/platform-Windows-56c7ff?style=flat-square" />
   <img alt="Initial mode: PAPER" src="https://img.shields.io/badge/initial_mode-PAPER-4fe0b6?style=flat-square" />
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-a6b7d0?style=flat-square" /></a>
@@ -18,11 +18,11 @@
 
 # A complete operating environment for BTC research and execution
 
-**BTC Quant OS** is a local-first platform being built to connect Bitcoin market data, systematic decisions, independent risk controls and quantitative analytics in one desktop trading terminal.
+**BTC Quant OS** is a local-first platform connecting Bitcoin market data, systematic decisions, independent risk controls and quantitative analytics in one desktop trading terminal.
 
 The target: a Windows server that collects data around the clock, trades in a realistic internal paper environment, explains each decision and remains observable through a React dashboard. Local AI structures news and events; deterministic code owns orders, accounting and risk.
 
-> **Current state — repository foundation.** Documentation, development prompts and visual direction are available. The trading engine, application UI, installer and CI are **not implemented yet**. The terminal below is a design concept, not a running product or a performance report. [See the authoritative status →](docs/STATUS.md)
+> **Current state — R1 internal PAPER.** The backend, PostgreSQL ledger, React UI, independent risk engine and guided Windows setup are implemented. Download the verified PAPER release and launch `START_PAPER.bat`. The owner’s Windows server still requires local acceptance. The illustration below remains a design concept. [Actual status and limits →](docs/STATUS.md)
 
 ## The terminal we are building
 
@@ -42,7 +42,7 @@ The target: a Windows server that collects data around the clock, trades in a re
 | Idempotent orders and reconciliation | Provenance, freshness and deduplication | Process, feed and backup health |
 | Independent exposure and loss limits | Versioned scores and model evaluation | Windows startup and crash recovery |
 
-*The table describes the planned scope. Availability is tracked in [STATUS](docs/STATUS.md), not implied by this overview.*
+*The table combines the implemented R1 core with planned R2/R3 scope. Availability is tracked in [STATUS](docs/STATUS.md), not implied by this overview.*
 
 ## The architecture
 
@@ -67,25 +67,21 @@ The LLM cannot issue orders, execute shell commands or access trading secrets. A
 | Milestone | What it delivers | Current state |
 | :--- | :--- | :--- |
 | **Foundation** | Repository identity, documentation, handoff and autonomous development instructions | Available |
-| **R1 · Paper core** | Live public feed, internal broker, ledger, risk controls, first UI and guided Windows setup | Next to build |
+| **R1 · Paper core** | Live public feed, internal broker, ledger, risk controls, first UI and guided Windows setup | Implemented; server acceptance pending |
 | **R2 · Intelligence** | Local AI, collectors, event scoring, research views and complete analytics UI | Planned |
 | **R3 · Operations** | Recovery, reconciliation, verified regional adapter and explicit live-readiness gates | Planned |
 
 Development agents are authorized to implement, verify and merge their own requested changes. Passing applicable checks is required; a merge does not automatically deploy software to the server or activate real-money trading.
 
-## Start building — one instruction
+## Start PAPER — one launcher
 
-Open this repository in an Astra development environment and send:
+Download **BTC-Quant-OS-v0.1.0-paper.zip** from the [PAPER release](https://github.com/MatCuns/BTC-Trading-OS/releases/tag/v0.1.0-paper), extract it on Windows, then double-click **START_PAPER.bat**.
 
-```text
-Lavora su https://github.com/MatCuns/BTC-Trading-OS.
-Leggi AGENTS.md e docs/STATUS.md, poi esegui integralmente
-docs/prompts/01_R1_PAPER.md.
-Implementa, verifica e integra autonomamente le modifiche in main.
-Non lasciarmi PR da approvare. Consegna la release PAPER e il wizard Windows.
-```
+The wizard checks Python 3.12 and PostgreSQL, points to official installers where required, asks for local folders and configures the database without exposing credentials. The release ZIP includes the compiled terminal; no Node server or OKX key is needed. Start with the kill switch engaged and strategy OFF. LIVE remains disabled.
 
-**No PDF attachment or separate preamble is needed.** Each [master prompt](docs/prompts) is self-contained. Server-specific choices belong in the guided installer the agent will build, not in manual source-code edits. [Istruzioni complete per Matteo →](docs/START_HERE.md)
+[Guida per Matteo →](docs/START_HERE.md) · [Server operations →](docs/OPERATIONS.md) · [Acceptance gates →](docs/ACCEPTANCE.md)
+
+For development, read [AGENTS](AGENTS.md) and [STATUS](docs/STATUS.md). R2 intelligence is the next development phase after R1 server acceptance. The R1 prompt is retained as the implementation specification, not an instruction to rebuild the project.
 
 ## Built around the hardware already available
 

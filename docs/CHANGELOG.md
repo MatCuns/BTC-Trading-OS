@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-paper — 2026-10-25
+- Gate software verificati: 25 pytest su Linux e Windows, restore isolati, wizard PowerShell 5.1 con configurazione esistente, 2 Vitest e 2 browser desktop/mobile. Evidenze e limiti in STATUS/ACCEPTANCE.
+- Implementato core PAPER, ledger PostgreSQL separati, rischio indipendente, feed OKX EEA con discovery e fixture esplicita.
+- Aggiunti partial fills, fee/slippage, stop simulati, reverse durabile, idempotenza e riconciliazione al riavvio.
+- Realizzata UI React con sette sezioni, grafici osservati, controlli PAPER, stato feed e diagnostica.
+- Implementati wizard Windows riprendibile, launcher, script operativi, backup/restore isolato e aggiornamenti a tag PAPER espliciti.
+- Aggiunti test Python/PostgreSQL, frontend/browser e CI Linux/Windows; release ZIP generata dopo i gate su main.
+- Verificata una connessione WebSocket pubblica reale al prodotto EEA; aggiunto percorso CI Windows del wizard con configurazione esistente, senza apertura browser.
+- Corretti header accessibili delle tabelle e fixture temporali monotone per Windows; aggiunte regressioni per drawdown, stop parziali e idempotenza oltre la finestra runtime.
+- Supportati percorsi Windows Unicode, normalizzati dal wizard; bootstrap rifiuta server PostgreSQL precedenti alla versione 16.
+- KPI sconosciuti esplicitamente vuoti quando il ledger non è riconciliato; cambio valuta settlement bloccato senza database PAPER separato.
+- LIVE disabilitato; AI e recovery unattended rimandati alle rispettive fasi. Collaudo sul server di Matteo non eseguito.
+
 ## Unreleased - 2026-10-25
 - PR #1 già integrata in main; rimosse le istruzioni obsolete che chiedevano di approvarla.
 - Nuova identità visiva BTC Quant OS, README di prodotto e concept del terminale chiaramente etichettato.
